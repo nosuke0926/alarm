@@ -108,6 +108,7 @@ body |   `String`     | Body of the alarm notification.
 stopButton | `String?` | Text shown in the stop button of the alarm notification. Button not shown if null.
 icon | `String?` | Icon to display on the notification. Only customizable on Android.
 iconColor | `Color?` | Color of the notification icon. Only customizable on Android.
+keepNotificationAfterAlarmEnds | `bool` | Whether to keep the notification visible after the alarm sound ends. **iOS only feature - has no effect on Android.** Defaults to `false`.
 
 ### VolumeSettings model
 

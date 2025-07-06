@@ -21,6 +21,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   late Duration? fadeDuration;
   late bool staircaseFade;
   late String assetAudio;
+  late bool _keepNotificationAfterAlarmEnds;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       fadeDuration = null;
       staircaseFade = false;
       assetAudio = 'assets/marimba.mp3';
+      _keepNotificationAfterAlarmEnds = true;
     } else {
       selectedDateTime = widget.alarmSettings!.dateTime;
       loopAudio = widget.alarmSettings!.loopAudio;
@@ -44,6 +46,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       fadeDuration = widget.alarmSettings!.volumeSettings.fadeDuration;
       staircaseFade = widget.alarmSettings!.volumeSettings.fadeSteps.isNotEmpty;
       assetAudio = widget.alarmSettings!.assetAudioPath;
+      _keepNotificationAfterAlarmEnds = widget.alarmSettings!.notificationSettings.keepNotificationAfterAlarmEnds;
     }
   }
 
@@ -121,10 +124,10 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       volumeSettings: volumeSettings,
       allowAlarmOverlap: true,
       notificationSettings: NotificationSettings(
-        title: 'Alarm example',
-        body: 'Your alarm ($id) is ringing',
-        stopButton: 'Stop the alarm',
-        icon: 'notification_icon',
+        title: 'Wake Up',
+        body: 'Time to start your day',
+        stopButton: 'Stop',
+        keepNotificationAfterAlarmEnds: _keepNotificationAfterAlarmEnds,
       ),
     );
     return alarmSettings;
@@ -334,6 +337,16 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
                 onChanged: (value) => setState(() => staircaseFade = value),
               ),
             ],
+          ),
+          SwitchListTile(
+            title: const Text('Keep notification after alarm ends'),
+            subtitle: const Text('iOS only - notification will remain in notification center'),
+            value: _keepNotificationAfterAlarmEnds,
+            onChanged: (value) {
+              setState(() {
+                _keepNotificationAfterAlarmEnds = value;
+              });
+            },
           ),
           if (!creating)
             TextButton(
